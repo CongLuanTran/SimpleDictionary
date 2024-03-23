@@ -31,7 +31,6 @@ public class TextUI {
 
     private final Dictionary dictionary;
     private final String fileName;
-    private boolean isEmpty = false;
     private final Scanner scanner;
 
     public TextUI(Dictionary dictionary, Scanner scanner, String fileName) {
@@ -49,7 +48,7 @@ public class TextUI {
 
             if (dictionary.engList().contains(engWord)) {
                 System.out.println("The word already exists! Enter a different word!");
-                continue;
+                engWord = "";
             }
         }
         while (engWord.isEmpty() || hasNumeric(engWord));
@@ -64,11 +63,16 @@ public class TextUI {
         System.out.println("Word added successfully!");
         System.out.println(dictionary);
 
-        System.out.print("Press enter to continue.");
+        System.out.println("Press enter to continue.");
         scanner.nextLine();
     }
 
     private void engSearch() {
+
+        if (isEmpty()) {
+            System.out.println("The dictionary is empty, please add some words!");
+            return;
+        }
 
         boolean next = true;
 
@@ -84,7 +88,7 @@ public class TextUI {
             String translated = dictionary.engToViet(query);
             if (translated == null) {
                 List<String> matched = dictionary.engSearch(query);
-                if (matched.isEmpty()) {
+                if (matched == null) {
                     System.out.println("Your search did not match any word!");
                 }
                 else {
@@ -106,7 +110,7 @@ public class TextUI {
                         next = false;
                         break;
                     default:
-                        continue;
+                        choice = "";
                 }
             }
             while (choice.isEmpty());
@@ -116,6 +120,12 @@ public class TextUI {
     }
 
     private void exam() {
+
+        if (isEmpty()) {
+            System.out.println("The dictionary is empty, please add some words!");
+            return;
+        }
+
         List<String> examList = dictionary.engList();
         List<String> mistakes = new ArrayList<>();
 
@@ -158,6 +168,13 @@ public class TextUI {
                 System.out.println(t + ": " + dictionary.engToViet(t));
             });
         }
+
+        System.out.println("Press enter to return.");
+        scanner.nextLine();
+    }
+
+    private boolean isEmpty() {
+        return dictionary.size() <= 0;
     }
 
     private void load() {
@@ -166,7 +183,7 @@ public class TextUI {
             int count = Integer.parseInt(sc.nextLine());
 
             if (count == 0) {
-                System.out.println("The dictionary is empty, please add some translations!");
+                System.out.println("The dictionary is empty, please add some words!");
             }
             else {
 
@@ -191,7 +208,7 @@ public class TextUI {
         System.out.println("====ENGLISH-VIETNAMESE DICTIONARY====");
         System.out.println("1. English to Vietnamese");
         System.out.println("2. Vietnamese to English");
-        System.out.println("3. Add a translation");
+        System.out.println("3. Add a word");
         System.out.println("4. Test your knowledge");
         System.out.println("5. Quit");
         System.out.println("=============END OF MENU=============");
@@ -218,7 +235,51 @@ public class TextUI {
         }
     }
 
+    public void start() {
+        load();
+        boolean next = true;
+
+        do {
+            menu();
+
+            String choice;
+            do {
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextLine();
+
+                switch (choice) {
+                    case "1":
+                        engSearch();
+                        break;
+                    case "2":
+                        vietSearch();
+                        break;
+                    case "3":
+                        addTranslation();
+                        break;
+                    case "4":
+                        exam();
+                        break;
+                    case "5":
+                        next = false;
+                        save();
+                        break;
+                    default:
+                        choice = "";
+                        break;
+                }
+            }
+            while (choice.isEmpty());
+        }
+        while (next);
+    }
+
     private void vietSearch() {
+
+        if (isEmpty()) {
+            System.out.println("The dictionary is empty, please add some words!");
+            return;
+        }
 
         boolean next = true;
 
@@ -234,7 +295,7 @@ public class TextUI {
             List<String> translated = dictionary.vietToEng(query);
             if (translated == null) {
                 List<String> matched = dictionary.vietSearch(query);
-                if (matched.isEmpty()) {
+                if (matched == null) {
                     System.out.println("Your search did not match any word!");
                 }
                 else {
@@ -256,7 +317,7 @@ public class TextUI {
                         next = false;
                         break;
                     default:
-                        continue;
+                        choice = "";
                 }
             }
             while (choice.isEmpty());

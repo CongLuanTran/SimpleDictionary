@@ -5,6 +5,8 @@
  */
 package simpledictionary;
 
+import java.util.Scanner;
+
 /**
  *
  * @author tranc
@@ -16,6 +18,12 @@ public class SimpleDictionary {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        String fileName = "EnVi.txt";
+        Dictionary dictionary = new Dictionary();
+        try (Scanner scanner = new Scanner(System.in)) {
+            TextUI ui = new TextUI(dictionary, scanner, fileName);
+            ui.start();
+        }
     }
     
 }

@@ -1,0 +1,43 @@
+21
+bicycle
+xe dap
+moon
+mat trang
+sun
+mat troi
+food
+do an
+king
+nha vua
+phone
+dien thoai
+cat
+meo
+car
+xe hoi
+flower
+hoa
+house
+nha
+book
+sach
+chair
+ghe
+tree
+cay
+school
+truong hoc
+student
+sinh vien
+computer
+may tinh
+table
+ban
+dog
+cho
+drink
+do uong
+fire
+lua
+water
+nuoc

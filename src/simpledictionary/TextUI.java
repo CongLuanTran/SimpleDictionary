@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package simpledictionaray;
+package simpledictionary;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,11 +30,14 @@ public class TextUI {
     }
 
     private final Dictionary dictionary;
+    private final String fileName;
+    private boolean isEmpty = false;
     private final Scanner scanner;
 
-    public TextUI(Dictionary dictionary, Scanner scanner) {
+    public TextUI(Dictionary dictionary, Scanner scanner, String fileName) {
         this.dictionary = dictionary;
         this.scanner = scanner;
+        this.fileName = fileName;
     }
 
     private void addTranslation() {
@@ -150,6 +157,64 @@ public class TextUI {
             mistakes.forEach((t) -> {
                 System.out.println(t + ": " + dictionary.engToViet(t));
             });
+        }
+    }
+
+    private void load() {
+        System.out.println("Loading dictionary...");
+        try (Scanner sc = new Scanner(new File(fileName))) {
+            int count = Integer.parseInt(sc.nextLine());
+
+            if (count == 0) {
+                System.out.println("The dictionary is empty, please add some translations!");
+            }
+            else {
+
+                String engWord;
+                String vietWord;
+                for (int i = 0; i < count; i++) {
+                    engWord = sc.nextLine();
+                    vietWord = sc.nextLine();
+                    dictionary.addTranslation(engWord, vietWord);
+                }
+
+                System.out.println("Finished loading " + count + " words!");
+            }
+
+        }
+        catch (FileNotFoundException ex) {
+            System.out.println("File not found! An empty dictionary will be used!");
+        }
+    }
+
+    private void menu() {
+        System.out.println("====ENGLISH-VIETNAMESE DICTIONARY====");
+        System.out.println("1. English to Vietnamese");
+        System.out.println("2. Vietnamese to English");
+        System.out.println("3. Add a translation");
+        System.out.println("4. Test your knowledge");
+        System.out.println("5. Quit");
+        System.out.println("=============END OF MENU=============");
+    }
+
+    private void save() {
+        System.out.println("Saving dictionary ...");
+        try (FileWriter fw = new FileWriter(fileName)) {
+            int count = dictionary.size();
+            fw.write(count + "\n");
+
+            String toWrite = "";
+            for (String engWord : dictionary.engList()) {
+                toWrite += engWord + "\n";
+                toWrite += dictionary.engToViet(engWord) + "\n";
+            }
+
+            fw.write(toWrite);
+
+            System.out.println("Finished saving " + count + " words!");
+        }
+        catch (IOException ex) {
+            System.out.println("Error when saving: " + ex);
         }
     }
 

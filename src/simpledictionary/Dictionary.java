@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package simpledictionaray;
+package simpledictionary;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -44,6 +44,10 @@ public class Dictionary {
     public String engToViet(String query) {
         String result = dictionary.get(query.toLowerCase());
         return result;
+    }
+
+    public int size() {
+        return dictionary.size();
     }
 
     @Override

@@ -20,13 +20,8 @@ import java.util.Scanner;
  */
 public class TextUI {
 
-    private static boolean hasNumeric(String word) {
-        for (char c : word.toCharArray()) {
-            if (Character.isDigit(c)) {
-                return true;
-            }
-        }
-        return false;
+    private static boolean validInput(String word) {
+        return word != null && !word.isEmpty() && word.chars().allMatch(Character::isLetter);
     }
 
     private final Dictionary dictionary;
@@ -51,17 +46,20 @@ public class TextUI {
                 engWord = "";
             }
         }
-        while (engWord.isEmpty() || hasNumeric(engWord));
+        while (!validInput(engWord));
 
         do {
             System.out.print("Enter a Vietnamese word: ");
             vietWord = scanner.nextLine();
         }
-        while (vietWord.isEmpty() || hasNumeric(vietWord));
+        while (!validInput(vietWord));
 
         dictionary.addTranslation(engWord, vietWord);
         System.out.println("Word added successfully!");
+
+        System.out.println("===CURRENT WORDS IN DICTIONARY===");
         System.out.println(dictionary);
+        System.out.println("=================================\n");
 
         System.out.println("Press enter to continue.");
         scanner.nextLine();
@@ -78,8 +76,10 @@ public class TextUI {
 
         do {
             String query;
-            System.out.print("Search bar: ");
+            System.out.println("===SEARCH BAR====");
+            System.out.print("Input: ");
             query = scanner.nextLine();
+            System.out.println("=================\n");
 
             if (query.isEmpty()) {
                 continue;
@@ -92,11 +92,15 @@ public class TextUI {
                     System.out.println("Your search did not match any word!");
                 }
                 else {
+                    System.out.println("===MATCHING WORDS===");
                     matched.forEach(System.out::println);
+                    System.out.println("====================\n");
                 }
             }
             else {
+                System.out.println("===TRANSLATION===");
                 System.out.println(translated);
+                System.out.println("=================\n");
             }
 
             String choice;
@@ -140,12 +144,14 @@ public class TextUI {
 
         Collections.shuffle(examList);
 
+        System.out.println("Translate these English words to Vietnamese: ");
+
         for (int i = 0; i < 10; i++) {
             String engWord = examList.get(i);
             String answer;
             String correctAnswer = dictionary.engToViet(engWord);
 
-            System.out.println("Translate '" + engWord + "' to Vietnamese.");
+            System.out.println((i + 1) + ". '" + engWord + "'");
             System.out.print("Your translation: ");
             answer = scanner.nextLine();
 
@@ -163,10 +169,11 @@ public class TextUI {
         System.out.println("Final score: " + score + "/10");
 
         if (!mistakes.isEmpty()) {
-            System.out.println("Wrong words: ");
+            System.out.println("===WRONG WORDS===");
             mistakes.forEach((t) -> {
                 System.out.println(t + ": " + dictionary.engToViet(t));
             });
+            System.out.println("=================\n");
         }
 
         System.out.println("Press enter to return.");
@@ -285,8 +292,10 @@ public class TextUI {
 
         do {
             String query;
-            System.out.print("Search bar: ");
+            System.out.println("===SEARCH BAR====");
+            System.out.print("Input: ");
             query = scanner.nextLine();
+            System.out.println("=================\n");
 
             if (query.isEmpty()) {
                 continue;
@@ -299,11 +308,15 @@ public class TextUI {
                     System.out.println("Your search did not match any word!");
                 }
                 else {
+                    System.out.println("===MATCHING WORDS===");
                     matched.forEach(System.out::println);
+                    System.out.println("====================\n");
                 }
             }
             else {
+                System.out.println("===TRANSLATION===");
                 translated.forEach(System.out::println);
+                System.out.println("=================\n");
             }
 
             String choice;
